@@ -12,8 +12,14 @@ class VisitGeoService
      */
     public function resolve(string $ip): array
     {
+        $ip = trim($ip);
+
         if ($this->isPrivateIp($ip)) {
-            return ['city' => 'Local', 'country' => null];
+            if (config('location.testing.enabled')) {
+                $ip = (string) config('location.testing.ip', '8.8.8.8');
+            } else {
+                return ['city' => 'Unknown', 'country' => null];
+            }
         }
 
         try {
@@ -26,6 +32,7 @@ class VisitGeoService
                 ];
             }
         } catch (\Throwable) {
+            // GeoIP lookup failed — use fallback below.
         }
 
         return ['city' => 'Unknown', 'country' => null];
@@ -33,6 +40,10 @@ class VisitGeoService
 
     private function isPrivateIp(string $ip): bool
     {
+        if ($ip === '' || $ip === '0.0.0.0') {
+            return true;
+        }
+
         return ! filter_var(
             $ip,
             FILTER_VALIDATE_IP,

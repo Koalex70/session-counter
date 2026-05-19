@@ -81,8 +81,9 @@ return [
     */
 
     'testing' => [
-        'ip' => '66.102.0.0',
-        'enabled' => env('LOCATION_TESTING', true),
+        // Публичный IP для подстановки при локальном/Docker-доступе (приватный IP клиента).
+        'ip' => env('LOCATION_TESTING_IP', '8.8.8.8'),
+        'enabled' => env('LOCATION_TESTING', false),
     ],
 
     /*

@@ -41,6 +41,8 @@ services:
       TRACKER_ALLOWED_ORIGIN: "*"
       TRACKER_COOKIE_SECURE: "false"
       TRACKER_COOKIE_SAMESITE: lax
+      LOCATION_TESTING: "true"
+      LOCATION_TESTING_IP: "77.88.8.8"
     depends_on:
       db:
         condition: service_healthy
