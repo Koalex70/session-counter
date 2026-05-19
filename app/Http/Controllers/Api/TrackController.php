@@ -29,7 +29,7 @@ class TrackController extends Controller
         ]);
 
         $visitorId = $request->cookie('visitor_id') ?? (string) Str::uuid();
-        $ip = $request->ip() ?? '0.0.0.0';
+        $ip = $this->geoService->clientIp($request);
         $geo = $this->geoService->resolve($ip);
         $userAgent = $request->userAgent() ?? $validated['user_agent'] ?? '';
         $device = UserAgentParser::parse($userAgent);
