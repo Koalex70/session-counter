@@ -123,4 +123,16 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Force HTTPS
+    |--------------------------------------------------------------------------
+    |
+    | When true, all generated URLs use https. Enable on Render/production;
+    | keep false for local Docker (http://localhost:8080).
+    |
+    */
+
+    'force_https' => (bool) env('FORCE_HTTPS', false),
+
 ];

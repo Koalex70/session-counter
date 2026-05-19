@@ -29,7 +29,7 @@
 
 | Слой | Технологии |
 |------|------------|
-| Backend | PHP 8.3, Laravel 13 |
+| Backend | PHP 8.4, Laravel 13 |
 | База данных | PostgreSQL |
 | Авторизация | Laravel Breeze (Blade) |
 | Frontend дашборда | Blade, Tailwind CSS, Alpine.js, Vite |

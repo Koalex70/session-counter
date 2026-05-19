@@ -1,0 +1,49 @@
+# Локальная проверка Docker-образа перед деплоем на Render.
+# Запуск: docker compose up --build
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: visits
+      POSTGRES_USER: visits
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U visits -d visits"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      APP_NAME: "Visit Counter"
+      APP_ENV: production
+      APP_DEBUG: "false"
+      APP_KEY: base64:2fl+KtvkphvMDOp8zGacK5iN4nThWlnV9YJ4eRyVG0E=
+      APP_URL: http://localhost:8080
+      FORCE_HTTPS: "false"
+      LOG_CHANNEL: stderr
+      DB_CONNECTION: pgsql
+      DB_URL: postgresql://visits:secret@db:5432/visits
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      RUN_SEED: "true"
+      ADMIN_EMAIL: admin@example.com
+      ADMIN_PASSWORD: password
+      TRACKER_ALLOWED_ORIGIN: "*"
+      TRACKER_COOKIE_SECURE: "false"
+      TRACKER_COOKIE_SAMESITE: lax
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
